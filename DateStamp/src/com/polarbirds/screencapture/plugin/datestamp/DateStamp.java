@@ -6,9 +6,7 @@ import com.polarbirds.screencapture.plugin.PluginInterface;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 /**
  * Created by kristian on 03.03.15.
