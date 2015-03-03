@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Uploader">
+    <output-path>$PROJECT_DIR$/out/artifacts/Uploader</output-path>
+    <root id="archive" name="Uploader.jar">
+      <element id="module-output" name="Uploader" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/Uploader/lib/jsch-0.1.51.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
