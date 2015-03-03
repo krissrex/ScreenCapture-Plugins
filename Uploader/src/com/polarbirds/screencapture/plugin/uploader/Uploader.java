@@ -57,16 +57,16 @@ public class Uploader implements PluginInterface {
     public void run(BufferedImage img) {
         try {
 
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(img, "png", baos);
+            InputStream is = new ByteArrayInputStream(baos.toByteArray());
+
             connect();
-
             String filename = getValidFileName();
-            ImageIO.write(img, "png", new File(filename));
-            sftp.put(filename, conf.getDirectory() + filename, ChannelSftp.OVERWRITE);
+            sftp.put(is, conf.getDirectory() + filename, ChannelSftp.OVERWRITE);
             sftp.exit();
-
             disconnect();
 
-            Files.deleteIfExists(Paths.get(filename));
             setClipboard(conf.getHTTPServer() + filename);
             log(conf.getHTTPServer() + filename);
 
