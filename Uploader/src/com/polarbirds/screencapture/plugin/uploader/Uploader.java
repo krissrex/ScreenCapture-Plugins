@@ -11,11 +11,10 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.URISyntaxException;
 import java.util.Random;
 
 public class Uploader implements PluginInterface {
-
-    private final String configurationFile = "uploader.txt";
 
     private Session session;
     private Channel channel;
@@ -24,7 +23,17 @@ public class Uploader implements PluginInterface {
     private Configuration conf;
     private Manifest manifest;
 
-    public Uploader() throws IOException, JSchException{
+    public Uploader() throws IOException, JSchException, URISyntaxException {
+
+        String configurationFile =
+                new File(
+                        getClass()
+                                .getProtectionDomain()
+                                .getCodeSource()
+                                .getLocation()
+                                .toURI()
+                                .getPath()
+                ).getParent() + File.separator + "uploader.txt";
 
         String author = "Trond Humborstad";
         String name = "Uploader";
@@ -65,8 +74,9 @@ public class Uploader implements PluginInterface {
             sftp.exit();
             disconnect();
 
-            setClipboard(conf.getHTTPServer() + filename);
-            log(conf.getHTTPServer() + filename);
+            String remotePath = conf.getHTTPServer() + filename;
+            setClipboard(remotePath);
+            log(remotePath);
 
         } catch (JSchException | SftpException e){
             System.err.println("Something related to the transfer went bad. " + e.getMessage());
