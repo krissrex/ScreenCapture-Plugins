@@ -1,7 +1,10 @@
 package com.polarbirds.screencapture.plugin.uploader;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Properties;
 
 /**
@@ -26,7 +29,20 @@ public class Configuration {
     }
 
     private void load(String configFile) throws IOException{
-        prop.load(new FileInputStream(configFile));
+
+        /*
+        The following lines does some modifications to what's stored in the config-file.
+        Things like path-handling etc.
+         */
+        String data = new String(Files.readAllBytes(new File(configFile).toPath()));
+
+        //Windows-paths needs to be escaped properly.
+        data = data.replace("\\", "\\\\");
+
+        //Turn it into a stream and feed it to prop.load()
+        ByteArrayInputStream bais = new ByteArrayInputStream(data.getBytes());
+
+        prop.load(bais);
         logfile = prop.getProperty("logfile", "out.txt");
         directory = prop.getProperty("directory");
         server = prop.getProperty("server");
