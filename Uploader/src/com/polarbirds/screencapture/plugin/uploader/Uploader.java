@@ -12,6 +12,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URISyntaxException;
+import java.util.Map;
 import java.util.Random;
 
 public class Uploader implements PluginInterface {
@@ -20,20 +21,11 @@ public class Uploader implements PluginInterface {
     private Channel channel;
     private ChannelSftp sftp;
     private JSch ssh;
-    private Configuration conf;
+    private Map<String, String> conf;
     private Manifest manifest;
 
-    public Uploader() throws IOException, JSchException, URISyntaxException {
+    public Uploader(Map<String, String> conf) throws IOException, JSchException, URISyntaxException {
 
-        String configurationFile =
-                new File(
-                        getClass()
-                                .getProtectionDomain()
-                                .getCodeSource()
-                                .getLocation()
-                                .toURI()
-                                .getPath()
-                ).getParent() + File.separator + "uploader.txt";
 
         String author = "Trond Humborstad";
         String name = "Uploader";
@@ -41,17 +33,17 @@ public class Uploader implements PluginInterface {
         double version = 1.0;
         manifest = new Manifest(author, name, description, version);
 
-        conf = new Configuration(configurationFile);
+        this.conf = conf;
 
         ssh = new JSch();
         JSch.setConfig("StrictHostKeyChecking", "no");
 
-        session = ssh.getSession(conf.getUser(), conf.getServer(), conf.getPort());
+        session = ssh.getSession(conf.get("user"), conf.get("server"), Integer.valueOf(conf.get("port")));
 
-        if(conf.getPrivateKey() != null)
-            ssh.addIdentity(conf.getPrivateKey());
+        if(conf.get("privateKey") != null)
+            ssh.addIdentity(conf.get("privateKey"));
         else
-            session.setPassword(conf.getPassword());
+            session.setPassword(conf.get("password"));
 
     }
     
@@ -70,11 +62,11 @@ public class Uploader implements PluginInterface {
 
             connect();
             String filename = getValidFileName();
-            sftp.put(is, conf.getDirectory() + filename, ChannelSftp.OVERWRITE);
+            sftp.put(is, conf.get("directory") + filename, ChannelSftp.OVERWRITE);
             sftp.exit();
             disconnect();
 
-            String remotePath = conf.getHTTPServer() + filename;
+            String remotePath = conf.get("httpServer") + filename;
             setClipboard(remotePath);
             log(remotePath);
 
@@ -115,7 +107,7 @@ public class Uploader implements PluginInterface {
         String out = "";
         do{
             out = randomString() + ".png";
-        } while(fileExist(conf.getDirectory() + out));
+        } while(fileExist(conf.get("directory") + out));
         return out;
     }
     
@@ -145,7 +137,7 @@ public class Uploader implements PluginInterface {
     }
     
     public void log(String arg) throws IOException{
-        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(conf.getLogfile(), true)));
+        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(conf.getOrDefault("logfile", "out.txt"), true)));
         out.println(arg);
         out.close();
     }

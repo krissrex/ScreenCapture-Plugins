@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Created by kristian on 03.03.15.
@@ -14,6 +15,10 @@ import java.util.Date;
 public class DateStamp implements PluginInterface {
 
     private static final Manifest manifest = new Manifest("Kristian Rekstad", "Date stamp", "Applies a date stamp to the image", 1.0);
+
+    public DateStamp(Map<String, String> configuration){
+
+    }
 
     @Override
     public Manifest manifest() {

@@ -5,6 +5,7 @@ import com.polarbirds.screencapture.plugin.PluginInterface;
 import com.polarbirds.screencapture.plugin.filters.filters.AES;
 
 import java.awt.image.BufferedImage;
+import java.util.Map;
 
 /**
  * Created by Tsh on 3/4/2015.
@@ -12,6 +13,10 @@ import java.awt.image.BufferedImage;
 public class Filters implements PluginInterface {
 
     private Manifest manifest = new Manifest("Trond Humborstad", "Filters", "Applies filters.", 1.0);
+
+    public Filters(Map<String, String> configuration){
+
+    }
 
     @Override
     public Manifest manifest() {
