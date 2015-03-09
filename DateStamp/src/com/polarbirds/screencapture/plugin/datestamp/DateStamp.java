@@ -16,7 +16,8 @@ public class DateStamp implements PluginInterface {
 
     private static final Manifest manifest = new Manifest("Kristian Rekstad", "Date stamp", "Applies a date stamp to the image", 1.0);
 
-    public DateStamp(Map<String, String> configuration){
+    @Override
+    public void setConfiguration(Object configuration) {
 
     }
 

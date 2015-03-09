@@ -11,8 +11,9 @@ public class SamplePlugin implements PluginInterface {
 
     private Manifest manifest = new Manifest("Kristian Rekstad", "SamplePlugin", "It does nothing!", 1.0);
 
-    public SamplePlugin(Map<String, String> configuration){
-        //Do something using the configuration here.
+    @Override
+    public void setConfiguration(Object configuration) {
+
     }
 
     @Override

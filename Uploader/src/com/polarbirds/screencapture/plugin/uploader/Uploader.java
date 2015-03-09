@@ -24,7 +24,7 @@ public class Uploader implements PluginInterface {
     private Map<String, String> conf;
     private Manifest manifest;
 
-    public Uploader(Map<String, String> conf) throws IOException, JSchException, URISyntaxException {
+    public Uploader() {
 
 
         String author = "Trond Humborstad";
@@ -33,18 +33,11 @@ public class Uploader implements PluginInterface {
         double version = 1.0;
         manifest = new Manifest(author, name, description, version);
 
-        this.conf = conf;
+    }
 
-        ssh = new JSch();
-        JSch.setConfig("StrictHostKeyChecking", "no");
-
-        session = ssh.getSession(conf.get("user"), conf.get("server"), Integer.valueOf(conf.get("port")));
-
-        if(conf.get("privateKey") != null)
-            ssh.addIdentity(conf.get("privateKey"));
-        else
-            session.setPassword(conf.get("password"));
-
+    @Override
+    public void setConfiguration(Object configuration) {
+        this.conf = (Map<String, String>) configuration;
     }
     
     @Override
@@ -55,6 +48,8 @@ public class Uploader implements PluginInterface {
     @Override
     public void run(BufferedImage img) {
         try {
+
+            setup();
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(img, "png", baos);
@@ -74,7 +69,21 @@ public class Uploader implements PluginInterface {
             System.err.println("Something related to the transfer went bad. " + e.getMessage());
         } catch (IOException e){
             System.err.println("Something related to IO went bad. " + e.getMessage());
+        } catch (URISyntaxException e) {
+            System.err.println("Something related to the URI-formatting went bad. " + e.getMessage());
         }
+    }
+
+    private void setup() throws IOException, JSchException, URISyntaxException{
+        ssh = new JSch();
+        JSch.setConfig("StrictHostKeyChecking", "no");
+
+        session = ssh.getSession(conf.get("user"), conf.get("server"), Integer.valueOf(conf.get("port")));
+
+        if(conf.get("privateKey") != null)
+            ssh.addIdentity(conf.get("privateKey"));
+        else
+            session.setPassword(conf.get("password"));
     }
     
     private void connect() throws JSchException{
