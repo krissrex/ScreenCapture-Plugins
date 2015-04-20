@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DateStamp/DateStamp.iml" filepath="$PROJECT_DIR$/DateStamp/DateStamp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FileSaver/FileSaver.iml" filepath="$PROJECT_DIR$/FileSaver/FileSaver.iml" />
       <module fileurl="file://$PROJECT_DIR$/Filters/Filters.iml" filepath="$PROJECT_DIR$/Filters/Filters.iml" />
       <module fileurl="file://$PROJECT_DIR$/SamplePlugin/SamplePlugin.iml" filepath="$PROJECT_DIR$/SamplePlugin/SamplePlugin.iml" />
       <module fileurl="file://$PROJECT_DIR$/ScreenCapture-Plugins.iml" filepath="$PROJECT_DIR$/ScreenCapture-Plugins.iml" />

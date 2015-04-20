@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="FileSaver:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/FileSaver_jar</output-path>
+    <root id="archive" name="FileSaver.jar">
+      <element id="module-output" name="FileSaver" />
+    </root>
+  </artifact>
+</component>

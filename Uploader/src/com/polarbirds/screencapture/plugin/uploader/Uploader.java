@@ -63,7 +63,6 @@ public class Uploader implements PluginInterface {
 
             String remotePath = conf.get("httpServer") + filename;
             setClipboard(remotePath);
-            log(remotePath);
 
         } catch (JSchException | SftpException e){
             System.err.println("Something related to the transfer went bad. " + e.getMessage());
@@ -114,18 +113,19 @@ public class Uploader implements PluginInterface {
     
     private String getValidFileName(){
         String out = "";
+        int length = Integer.parseInt(conf.getOrDefault("length", "5"));
         do{
-            out = randomString() + ".png";
+            out = randomString(length) + ".png";
         } while(fileExist(conf.get("directory") + out));
         return out;
     }
     
-    public String randomString(){
+    public String randomString(int length){
         Random r = new Random();
 
         String alphabet = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         String randomstring = "";
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < length; i++) {
             randomstring += alphabet.charAt(r.nextInt(alphabet.length()));
         }
         return randomstring;
@@ -144,11 +144,4 @@ public class Uploader implements PluginInterface {
             );
         }
     }
-    
-    public void log(String arg) throws IOException{
-        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(conf.getOrDefault("logfile", "out.txt"), true)));
-        out.println(arg);
-        out.close();
-    }
-
 }
